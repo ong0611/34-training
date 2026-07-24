@@ -51,6 +51,35 @@ public class OrderServiceCreateTests
     }
 
     [Fact]
+    public async Task CreateOrder_GoldCustomer_SnapshotsFullPriceNotPreDiscounted()
+    {
+        using var db = TestSetup.CreateContext();
+        var service = TestSetup.CreateOrderService(db);
+        var customer = TestSetup.AddCustomer(db, CustomerTier.Gold);
+        var product = TestSetup.AddProduct(db, unitPrice: 1000m);
+
+        var result = await service.CreateOrderAsync(customer.Id, new[] { new NewOrderLine(product.Id, 1) });
+
+        Assert.True(result.Success);
+        Assert.Equal(1000m, result.Value!.Items.Single().UnitPriceSnapshot);
+    }
+
+    [Fact]
+    public async Task CreateOrder_GoldCustomer_TotalAppliesDiscountOnlyOnce()
+    {
+        using var db = TestSetup.CreateContext();
+        var service = TestSetup.CreateOrderService(db);
+        var customer = TestSetup.AddCustomer(db, CustomerTier.Gold);
+        var product = TestSetup.AddProduct(db, unitPrice: 1000m);
+
+        var result = await service.CreateOrderAsync(customer.Id, new[] { new NewOrderLine(product.Id, 1) });
+        var order = result.Value!;
+        order.Customer = customer;
+
+        Assert.Equal(900m, service.CalculateTotal(order));
+    }
+
+    [Fact]
     public async Task CreateOrder_UnknownCustomer_Fails()
     {
         using var db = TestSetup.CreateContext();
