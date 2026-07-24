@@ -4,7 +4,8 @@
 > 貼上當時真實的 prompt、真實的數字、真實的錯誤訊息——三個月後的你（和你的同事）才用得上。
 
 #### 使用的 agent 與模型：
-
+Codex CLI 
+gpt-5.6-sol
 ---
 
 ## 通用四問
@@ -72,3 +73,5 @@
 ## 附錄：值得留下的對話片段
 
 （貼 1–2 段最有代表性的 prompt 與回應**摘要**——不用貼全文，重點是「我怎麼問」和「它怎麼答」。）
+<img width="1225" height="457" alt="image" src="https://github.com/user-attachments/assets/5eda1901-77f5-4e20-9913-4b023bf6b898" />
+
