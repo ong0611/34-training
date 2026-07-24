@@ -120,9 +120,8 @@ public class OrderService : IOrderService
 
         foreach (var item in order.Items)
         {
-            var product = await _productRepository.GetByIdAsync(item.ProductId);
-            if (product is not null)
-                product.StockQuantity += item.Quantity;
+            if (item.Product is not null)
+                item.Product.StockQuantity += item.Quantity;
         }
 
         order.Status = OrderStatus.Cancelled;
